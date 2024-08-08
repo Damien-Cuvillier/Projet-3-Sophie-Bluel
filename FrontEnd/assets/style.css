@@ -216,7 +216,7 @@ footer nav ul {
 	background-color: #FFFEF8;
 	max-width: 400px;
 	padding: 20px;
-	margin:180px auto;
+	margin:170px auto;
 	text-align: center;
 }
 .login-container h2{
@@ -247,6 +247,7 @@ footer{
 	justify-content: flex-end;
 }
 #error-message{
+	padding-top: 10px;
 	display:none;
 	color: red;
 }
