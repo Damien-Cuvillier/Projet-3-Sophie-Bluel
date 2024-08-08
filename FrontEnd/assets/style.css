@@ -206,3 +206,9 @@ footer nav ul {
 	background-color: #1D6154;
 	color: white;
 }
+
+.login-container{
+	max-width: 1440px;
+	height: 1024px;
+	background-color: #FFFEF8;
+}
