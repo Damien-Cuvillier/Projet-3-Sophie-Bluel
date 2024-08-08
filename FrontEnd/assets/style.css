@@ -93,8 +93,13 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
-}
 
+}
+/* Suppresion des décorations */
+nav li a {
+	text-decoration: none;
+	
+}
 li:hover {
 	color: #B1663C;
 }
@@ -185,7 +190,7 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
-
+/* Style pour les boutons de tri */
 .category-menu{
 	display: flex;
 	justify-content: center;
@@ -206,9 +211,39 @@ footer nav ul {
 	background-color: #1D6154;
 	color: white;
 }
-
+/* Style pour la page de connexion */
 .login-container{
-	max-width: 1440px;
-	height: 1024px;
 	background-color: #FFFEF8;
+	max-width: 400px;
+	padding: 20px;
+	margin:180px auto;
+	text-align: center;
 }
+.login-container h2{
+	margin-bottom: 20px;
+}
+.login-container form{
+	display: flex;
+	flex-direction: column;
+}
+.login-container form label{
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.login-container input{
+	border: none;
+	height:51px;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	margin-bottom:20px;
+	max-width: 379px;
+}
+.login-container form a {
+	color:black;
+}
+footer{
+	height: 60px;
+	display: flex;
+	justify-content: flex-end;
+}
+
