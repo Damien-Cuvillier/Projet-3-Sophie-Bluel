@@ -1,42 +1,81 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const gallery=document.querySelector('.gallery');
+    const gallery = document.querySelector('.gallery');
+    const categoryMenu = document.querySelector('.category-menu');
+    let allProjects = []; // Stocker tous les projets ici
 
-// Fonction pour créer un élément d'image pour chaque projet
-    const creerProjetImage = (projet)=>{
-        const figure =document.createElement('figure');
+    // Fonction pour créer un élément de figure pour chaque projet
+    const createProjectFigure = (project) => {
+        const figure = document.createElement('figure');
         const img = document.createElement('img');
-        img.src=projet.imageUrl;
-        img.alt=projet.title;
+        img.src = project.imageUrl;
+        img.alt = project.title;
 
-        const imgLegende =document.createElement('imgLegende');
-        imgLegende.textContent = projet.title;
+        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = project.title;
 
         figure.appendChild(img);
-        figure.appendChild(imgLegende);
+        figure.appendChild(figcaption);
         return figure;
-}
-// Fonction pour afficher les projets dans la galerie
-    const afficherProjet = (projets) => {
-        gallery.innerHTML='';
-        projets.forEach(projet =>{
-            const projetFigure = creerProjetImage(projet);
-            gallery.appendChild(projetFigure);
-        })
-    }
-    // Fonction pour récupérer les projets depuis l'API
-    const fetchProjets = async () => {
-        try {
-            const reponse = await fetch('http://localhost:5678/api/works')
-            if (!reponse.ok){
-                throw new error (`Erreur HTTP status: ${reponse.status}`);
-            }
-            const projets = await reponse.json(); 
-            afficherProjet(projets);
-            return projets;
-    } catch (error){
-        console.error('Erreur lors de la récupération des catégories:', error);
-        }
-    }
-    fetchProjets();
-})
+    };
 
+    // Fonction pour afficher les projets dans la galerie
+    const displayProjects = (projects) => {
+        gallery.innerHTML = '';
+        projects.forEach(project => {
+            const projectFigure = createProjectFigure(project);
+            gallery.appendChild(projectFigure);
+        });
+    };
+
+    // Fonction pour récupérer les projets depuis l'API
+    const fetchProjects = async () => {
+        try {
+            const response = await fetch('http://localhost:5678/api/works');
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP! status: ${response.status}`);
+            }
+            const projects = await response.json();
+            allProjects = projects; // Stocker les projets récupérés
+            displayProjects(projects);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des projets:', error);
+        }
+    };
+
+    // Fonction pour récupérer les catégories depuis l'API
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost:5678/api/categories');
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP! status: ${response.status}`);
+            }
+            const categories = await response.json();
+            createCategoryMenu(categories);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des catégories:', error);
+        }
+    };
+
+    // Fonction pour créer le menu des catégories
+    const createCategoryMenu = (categories) => {
+        const allButton = document.createElement('button');
+        allButton.textContent = 'Tous';
+        allButton.addEventListener('click', () => {
+            displayProjects(allProjects); // Afficher tous les projets
+        });
+        categoryMenu.appendChild(allButton);
+
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.textContent = category.name;
+            button.addEventListener('click', () => {
+                filterProjectsByCategory(category.id);
+            });
+            categoryMenu.appendChild(button);
+        });
+    };
+ 
+    // Initialiser la galerie et le menu des catégories
+    fetchProjects();
+    fetchCategories();
+});

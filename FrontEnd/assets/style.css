@@ -186,3 +186,22 @@ footer nav ul {
 	margin: 2em
 }
 
+.category-menu{
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.category-menu button {
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	background-color: white;
+	color: #1D6154;
+	padding:10px 20px;
+	margin:5px;
+}
+
+.category-menu button:hover {
+	background-color: #1D6154;
+	color: white;
+}
