@@ -246,4 +246,7 @@ footer{
 	display: flex;
 	justify-content: flex-end;
 }
-
+#error-message{
+	display:none;
+	color: red;
+}
