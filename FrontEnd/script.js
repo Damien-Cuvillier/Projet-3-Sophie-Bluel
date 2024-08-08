@@ -74,7 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryMenu.appendChild(button);
         });
     };
- 
+    const filterProjectsByCategory= (categoryID) =>{
+        const filtredProjects= allProjects.filter(project => project.category.id === categoryID)
+           displayProjects(filtredProjects)
+        }
+    
     // Initialiser la galerie et le menu des catégories
     fetchProjects();
     fetchCategories();
