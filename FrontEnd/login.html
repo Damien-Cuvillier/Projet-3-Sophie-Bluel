@@ -8,7 +8,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-    <script src="./login.js">defer</script>
+   
 </head>
 <body>
     <header>
@@ -17,7 +17,7 @@
             <ul>
                 <li><a href="index.html">Projets</a></li>
                 <li><a href="#"></a>contact</li>
-                <li><a href="login.html"></a>login</li>
+                <li><a href="login.html" id="btn-login"></a>login</li>
                 <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
             </ul>
         </nav>
@@ -31,7 +31,7 @@
         <label for="password">Mot de Passe</label>
         <input type="password" id="password" name="password" required>
 
-        <input type="submit" value="Se connecter">
+        <input type="submit" value="Se connecter" id="btnSubmit">
         <a href="#">Mot de passe oublié ?</a>
         </form>
         <p id="error-message"></p>
@@ -43,6 +43,7 @@
             </ul>
         </nav>
     </footer>
-   
+    <script src="./login.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
