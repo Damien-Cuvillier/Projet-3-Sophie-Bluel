@@ -44,9 +44,18 @@
 	</section>
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
-        <a href="#modale"><i class="fa-regular fa-pen-to-square"><p>modifier</p></i></a>
+        <a href="#modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i><p>modifier</p></a>
 	</section>
-        <div class="gallery"></div>
+
+    <aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal">
+        <div class="modal-wrapper">
+            <span class="close js-modal-close">&times;</span>
+            <h1 id="title-modal" class="title-modal">Galerie photo</h1>
+            <!-- Contenu de la modale ici -->
+        </div>
+    </aside>
+
+    <div class="gallery"></div>
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -71,5 +80,6 @@
 </footer>
     <script src="./script.js"></script>
     <script src="./login.js"></script>
+    <script src="./app.js"></script>
 </body>
 </html>
