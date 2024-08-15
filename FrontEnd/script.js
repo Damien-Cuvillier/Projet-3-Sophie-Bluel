@@ -1,3 +1,5 @@
+//lien pour le swagger http://localhost:5678/api-docs/
+
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.querySelector('.gallery');
     const categoryMenu = document.querySelector('.category-menu');
@@ -74,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryMenu.appendChild(button);
         });
     };
+    //Fonction pour trier les projets 
     const filterProjectsByCategory= (categoryID) =>{
         const filtredProjects= allProjects.filter(project => project.category.id === categoryID)
            displayProjects(filtredProjects)
