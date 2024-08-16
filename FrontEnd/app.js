@@ -22,11 +22,37 @@ const displayModalGallery = () => {
     modalGallery.innerHTML = ''; // On vide la galerie avant de la remplir
 
     allProjects.forEach(project => {
-        const projectFigure = createProjectFigure(project, false);
+        const projectFigure = createProjectFigure(project, false, true); // false pour cacher les titres des images, true pour afficher l'icone corbeille en modale
         modalGallery.appendChild(projectFigure);
     });
  
 }  
+//fonction pour supprimer un élément de la modale
+const handleDeleteProject = async (projectId) => {
+    const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
+    if (!confirmation) return;
+
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la suppression du projet');
+        }
+
+        alert('Projet supprimé avec succès');
+        fetchProjects();
+        displayModalGallery();
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur s\'est produite lors de la suppression du projet');
+    }
+};
 
 //Fonction pour fermer la modal
 const closeModal = (e) => {

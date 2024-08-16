@@ -1,22 +1,33 @@
 //lien pour le swagger http://localhost:5678/api-docs/
 let allProjects = []; // Stocker tous les projets ici
 
-// Fonction pour créer un élément de figure pour chaque projet
-const createProjectFigure = (project, description= true) => {
+// Fonction pour créer un élément de figure pour chaque projet et description = true pour afficher ou non les titres des images pareil pour les icones
+const createProjectFigure = (project, description = true, deleteIcon = false) => {
     const figure = document.createElement('figure');
     const img = document.createElement('img');
     img.src = project.imageUrl;
     img.alt = project.title;
 
     figure.appendChild(img);
-    
-    if(description){
+    if (description) {
         const figcaption = document.createElement('figcaption');
         figcaption.textContent = project.title;
         figure.appendChild(figcaption);
     }
+
+    if (deleteIcon) {
+        const deleteIcon = document.createElement('i');
+        deleteIcon.className = 'fa fa-trash delete-icon';
+        deleteIcon.addEventListener('click', () => {
+            handleDeleteProject(project.id);
+        });
+        figure.appendChild(deleteIcon);
+    }
+
+    
     return figure;
 };
+
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.querySelector('.gallery');
     const categoryMenu = document.querySelector('.category-menu');
