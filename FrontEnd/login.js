@@ -2,11 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
     const errorMessage = document.getElementById('error-message');
     const loginBtn = document.getElementById('btn-login');
-
+    
     // Vérifie si le token d'authentification est stocké
     const token = localStorage.getItem('authToken');
     if (token) {
  // Si l'utilisateur est connecté, changer le texte du bouton à "logout"
+        
         loginBtn.innerText = 'logout';
         loginBtn.href = '#';  // Empêche la redirection vers la page de login
 

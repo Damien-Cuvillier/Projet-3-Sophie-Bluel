@@ -62,3 +62,40 @@
     font-size: 1.5em;
     cursor: pointer;
 }
+.modal .gallery-modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+.modal .gallery-modal figure {
+    margin: 0;
+    position: relative;
+}
+.modal .gallery-modal img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.modal .add-photo-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #1D6154;
+	border-radius: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+	width: 237px;
+	height: 36px;
+
+
+}
+.modal-wrapper h1{
+	color: black;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30.5px;
+	text-align: center;
+	padding:50px;
+}

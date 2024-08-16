@@ -13,7 +13,21 @@ const openModal = (e) => {
     modal.addEventListener('click', closeModal);
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
     modal.querySelector('.modal-wrapper').addEventListener('click', stopPropagation);
+
+    displayModalGallery();
 };
+//fonction pour afficher la galerie de photo dans la modal
+const displayModalGallery = () => {
+    const modalGallery = document.querySelector('.gallery-modal');
+    modalGallery.innerHTML = ''; // On vide la galerie avant de la remplir
+
+    allProjects.forEach(project => {
+        const projectFigure = createProjectFigure(project, false);
+        modalGallery.appendChild(projectFigure);
+    });
+ 
+}  
+
 //Fonction pour fermer la modal
 const closeModal = (e) => {
     if (modal === null) return;

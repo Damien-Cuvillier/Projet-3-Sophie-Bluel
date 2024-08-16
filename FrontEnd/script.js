@@ -1,24 +1,26 @@
 //lien pour le swagger http://localhost:5678/api-docs/
+let allProjects = []; // Stocker tous les projets ici
 
+// Fonction pour créer un élément de figure pour chaque projet
+const createProjectFigure = (project, description= true) => {
+    const figure = document.createElement('figure');
+    const img = document.createElement('img');
+    img.src = project.imageUrl;
+    img.alt = project.title;
+
+    figure.appendChild(img);
+    
+    if(description){
+        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = project.title;
+        figure.appendChild(figcaption);
+    }
+    return figure;
+};
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.querySelector('.gallery');
     const categoryMenu = document.querySelector('.category-menu');
-    let allProjects = []; // Stocker tous les projets ici
-
-    // Fonction pour créer un élément de figure pour chaque projet
-    const createProjectFigure = (project) => {
-        const figure = document.createElement('figure');
-        const img = document.createElement('img');
-        img.src = project.imageUrl;
-        img.alt = project.title;
-
-        const figcaption = document.createElement('figcaption');
-        figcaption.textContent = project.title;
-
-        figure.appendChild(img);
-        figure.appendChild(figcaption);
-        return figure;
-    };
+    
 
     // Fonction pour afficher les projets dans la galerie
     const displayProjects = (projects) => {
