@@ -50,10 +50,47 @@
 <!-- Modal -->
 	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal">
         <div class="modal-wrapper">
-            <span class="close js-modal-close">&times;</span>
-            <h1 id="title-modal" class="title-modal">Galerie photo</h1>
-            <div class="gallery-modal"></div>
-			<button class="add-photo-btn">Ajouter une photo</button>
+            <span class="close js-modal-close"><i class="fa-solid fa-xmark"></i></span>
+
+			<!--Vue 1 Galerie photo-->
+			<div id="view-gallery" class="modal-view">
+				<h1 id="title-modal" class="title-modal">Galerie photo</h1>
+				<div class="gallery-modal"></div>
+				<button id="btn-add-photo" class="btn">Ajouter une photo</button>
+			</div>
+	
+			<!--Vue2 ajouter une photo-->
+			<div id="view-add-photo" style="display: none;">
+				<button id="btn-back" class="btn-back"><i class="fa-solid fa-arrow-left"></i></button>
+				<h1 class="title-modal">Ajout photo</h1>
+				
+				<form id="form-add-photo">
+					<div class="image-upload-container">
+						<div class="image-preview">
+							<img id = "image-preview" src="" alt="Prévisualisation de l'image" >
+					
+						<div class="photo">
+							<button class="btn-container">
+								<input type="file" id="photo-upload" name="photo"  accept="image/png, image/jpeg">
+								<p>+ Ajouter photo</p>
+							</button>
+							<label for="photo">jpg, png : 4mo max</label>
+						</div>
+						</div>
+					</div>
+					<label for="title">Titre</label>
+					<input type="text" id="title" name="title" required>
+	
+					<label for="category">Catégorie</label>
+					<select id="category" name="category" required>
+						<option  disabled selected></option> <!--ne pas faire apparaitre de catégorie sans la sélectionner-->
+						<!-- Options de catégories à remplir dynamiquement -->
+					</select>
+					
+					<button type="submit" class="btn-submit">Valider</button>
+				</form>
+				
+			</div>
         </div>
     </aside>
 <!--Formulaire de contact-->

@@ -297,7 +297,7 @@ footer{
 	gap:10px;
 	padding: 10px;
 }
-/* Style pour la modal */
+/* Style pour la modal vue 1 Galerie photo*/
 .modal {
     display: none;
     position: fixed;
@@ -313,17 +313,20 @@ footer{
 }
 
 .modal-wrapper {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
+	width: 630px;
+	max-height: 670px;
+	height: 100%;
+    margin: auto;
+    padding: 50px 125px 125px;
+    background-color: white;
+    border-radius: 8px;
     position: relative;
-	animation: slideFromTop .5s both;
 }
 
 .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 30px;
+    right: 40px;
     font-size: 1.5em;
     cursor: pointer;
 }
@@ -331,6 +334,8 @@ footer{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #B3B3B3;
 }
 .modal .gallery-modal figure {
     margin: 0;
@@ -341,9 +346,10 @@ footer{
     height: auto;
     display: block;
 }
-.modal .add-photo-btn {
+.modal #btn-add-photo {
     display: block;
-    margin: 20px auto;
+    margin:  auto;
+	margin-top: 30px;
     padding: 10px 20px;
     background-color: #1D6154;
 	border-radius: 60px;
@@ -352,17 +358,18 @@ footer{
     cursor: pointer;
 	width: 237px;
 	height: 36px;
-
-
+	
 }
+
 .modal-wrapper h1{
 	color: black;
 	font-family: Work Sans;
 	font-size: 26px;
-	font-weight: 400;
+	font-weight: 500;
 	line-height: 30.5px;
 	text-align: center;
 	padding:50px;
+    margin-bottom: 20px;
 }
 
 .delete-icon {
@@ -403,4 +410,120 @@ footer{
 @keyframes slideToBottom{
 	from{ transform: translateY(0px)}
 	to {transform: translateY(50px)}
+}
+
+/*Style pour la modal vue 2 Ajout photo*/
+
+#form-add-photo {
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	
+	
+}
+#btn-back {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 10px;
+	position: absolute;
+    top: 30px;
+    left: 40px;
+	
+}
+.image-upload-container {
+    margin-bottom: 20px;
+}
+.image-preview{
+	width: 100%;
+    height: 169px;
+    border-radius: 8px;
+	margin: auto;
+    justify-content: center;
+    align-items: center;
+	display: flex;
+	flex-direction: column;
+	background-color: #E8F1F6;
+	;
+	margin-bottom: 10px;
+}
+
+#image-preview{
+	width: 76px;
+	height: 76px;
+    display: block;
+    border-radius: 8px;
+}
+
+.photo {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+    margin-top: 10px;
+}
+.photo label{
+	font-family: Work Sans;
+	font-size: 10px;
+	font-weight: 400;
+	line-height: 11.73px;
+	text-align: center;
+
+}
+#photo-upload {
+	display:none;
+}
+.btn-container {
+    display: inline-block;
+    color: #306685;
+    background-color: #c9d9de;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+	width:173px;
+}
+.btn-container p{
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16.42px;
+	text-align: center;
+
+}
+label[for="photo-upload"] {
+    font-size: 12px;
+    color: #888;
+}
+label[for="title"],
+label[for="category"] {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+input[type="text"],
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+.btn-submit {
+    width: 50%;
+    padding: 12px;
+    background-color: #ccc;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+	margin: auto;
 }

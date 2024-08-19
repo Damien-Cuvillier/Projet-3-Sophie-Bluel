@@ -2,6 +2,15 @@ let modal = null;
 const focusableSelector= 'submit, button'           
 let focusables=[] //stock les elements focusables
 let previousyFocusedElement = null
+const btnAddPhoto = document.getElementById('btn-add-photo');
+const btnBack = document.getElementById('btn-back');
+const viewGallery = document.getElementById('view-gallery');
+const viewAddPhoto = document.getElementById('view-add-photo');
+const formAddPhoto = document.getElementById('form-add-photo');
+const photoUploadInput = document.getElementById('photo-upload');
+const imagePreview = document.getElementById('image-preview');
+
+
 //fonction pour ouvrir la modal
 const openModal = (e) => {
     e.preventDefault();
@@ -29,6 +38,83 @@ const displayModalGallery = () => {
     });
  
 }  
+//afficher la vue "Ajout photo"
+btnAddPhoto.addEventListener('click', () => {
+    viewGallery.style.display = 'none';
+    viewAddPhoto.style.display = 'block';
+   
+});
+// Revenir à la vue "Galerie photo"
+btnBack.addEventListener('click', () => {
+    viewAddPhoto.style.display = 'none';
+    viewGallery.style.display = 'block';
+});
+
+ // Prévisualisation de l'image  Input pour uploader l'image, qui déclenche une prévisualisation dans l'élément imagePreview.
+ photoUploadInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.style.display = 'none';
+    }
+});
+// Soumettre le formulaire d'ajout de photo
+formAddPhoto.addEventListener('submit', async (e)=>{
+    e.preventDefault()
+    //recuperer les données du formulaires
+    const formData = new FormData(formAddPhoto)
+
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            },
+            body: formData
+        });
+        if (response.ok) {
+            alert('Photo ajoutée avec succès !')
+            //Retourne a la vue galerie 
+            viewAddPhoto.style.display='none'
+            viewGallery.style.display='block'
+            fetchProjects() //pour recharger la galerie dans la modal
+        } else {
+            alert('Erreur lors de l\'ajout de la photo')
+        }
+    } catch(error) {
+        console.error('Erreur lors de la soumission du formulaire:', error)
+    }
+    
+})
+//remplissage des catégories dans la vue Ajout photo
+const fetchCategoriesForm = async () =>{
+    try{
+        const response = await fetch('http://localhost:5678/api/categories')
+        const categories = await response.json()
+
+        const categorySelect = document.getElementById('category')
+        categories.forEach(category =>{
+            const option = document.createElement('option')
+            option.value = category.id
+            option.textContent = category.name
+            categorySelect.appendChild(option)
+        })
+    } catch(error) {
+        console.error('Erreur lors de la récupération des catégories', error)
+    }
+}
+// Appelle cette fonction lors du passage à la vue "Ajout photo"
+btnAddPhoto.addEventListener('click', ()=>{
+    viewGallery.style.display = 'none'
+    viewAddPhoto.style.display = 'block'
+    fetchCategoriesForm();
+})
 //fonction pour supprimer un élément de la modale
 const handleDeleteProject = async (projectId) => {
     const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
