@@ -202,7 +202,7 @@ footer nav ul {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 20px;
-	
+	width: 100%;
 }
 
 .category-menu button {
@@ -261,4 +261,146 @@ footer{
 	padding-top: 10px;
 	display:none;
 	color: red;
+}
+/* Style pour le mode edition */
+#portfolio{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap:20px;
+}
+#portfolio p {
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16.42px;
+	text-align: center;
+
+}
+.js-modal{
+	text-decoration: none;
+	display:none;
+	align-items: center;
+}
+#mode-edition{
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+	color: white;
+	height:59px;
+	max-width: 1440px;
+}
+.fa-pen-to-square{
+	display: flex;
+	gap:10px;
+	padding: 10px;
+}
+/* Style pour la modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+	animation: fadeIn .3s both; 
+}
+
+.modal-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+	animation: slideFromTop .5s both;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+.modal .gallery-modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+.modal .gallery-modal figure {
+    margin: 0;
+    position: relative;
+}
+.modal .gallery-modal img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.modal .add-photo-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #1D6154;
+	border-radius: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+	width: 237px;
+	height: 36px;
+
+
+}
+.modal-wrapper h1{
+	color: black;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30.5px;
+	text-align: center;
+	padding:50px;
+}
+
+.delete-icon {
+    position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    top: 10px;
+    right: 10px;
+    color: white;
+    cursor: pointer;
+	width: 25px;
+	height: 25px;
+	background-color: black;
+	border-radius: 5px;
+
+}
+.modal[aria-hidden ="true"] {
+	animation-name: fadOut;
+}
+
+.modal[aria-hidden ="true"] .modal-wrapper{
+	animation-name: slideToBottom;
+}
+/* Définition des animations ouverture et fermeture de la modal */
+@keyframes fadeIn {
+	from {opacity: 0;}
+	to {opacity : 1;}
+}
+@keyframes fadeOut {
+	from {opacity: 1;}
+	to {opacity : 0;}
+}
+@keyframes slideFromTop{
+	from{ transform: translateY(-50px)}
+	to {transform: translateY(0px)}
+}
+@keyframes slideToBottom{
+	from{ transform: translateY(0px)}
+	to {transform: translateY(50px)}
 }

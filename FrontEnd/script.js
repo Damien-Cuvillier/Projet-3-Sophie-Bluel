@@ -16,7 +16,7 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
     }
 
     if (deleteIcon) {
-        const deleteIcon = document.createElement('i');
+        const deleteIcon = document.createElement('submit');
         deleteIcon.className = 'fa fa-trash delete-icon';
         deleteIcon.addEventListener('click', () => {
             handleDeleteProject(project.id);

@@ -2,14 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
     const errorMessage = document.getElementById('error-message');
     const loginBtn = document.getElementById('btn-login');
-    
+    const editMode = document.getElementById('mode-edition');
+    const categoryMenu = document.querySelector('.category-menu');
+    const btnModal = document.querySelector('.js-modal');
     // Vérifie si le token d'authentification est stocké
     const token = localStorage.getItem('authToken');
+
     if (token) {
  // Si l'utilisateur est connecté, changer le texte du bouton à "logout"
         
         loginBtn.innerText = 'logout';
         loginBtn.href = '#';  // Empêche la redirection vers la page de login
+        editMode.style.display = 'flex';
+        categoryMenu.style.display ='none';
+        btnModal.style.display = 'flex';
 
  // Ajouter un gestionnaire d'événement pour déconnecter l'utilisateur
         loginBtn.addEventListener('click', (event) => {
@@ -44,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('authToken', data.token);
 
                 // Redirection vers la page du mode édition
-                window.location.href = 'edit.html';
+                window.location.href = 'index.html';
             } else {
                 // Affichage du message d'erreur
                 errorMessage.textContent = 'Identifiants incorrects. Veuillez réessayer.';

@@ -1,12 +1,14 @@
 let modal = null;
-const focusableSelector= 'img'
+const focusableSelector= 'submit, button'           
 let focusables=[] //stock les elements focusables
-
+let previousyFocusedElement = null
 //fonction pour ouvrir la modal
 const openModal = (e) => {
     e.preventDefault();
     modal = document.querySelector(e.currentTarget.getAttribute('href'));
-    focusabes= Array.from(modal.querySelectorAll(focusableSelector))
+    focusables= Array.from(modal.querySelectorAll(focusableSelector))
+    previousyFocusedElement = document.querySelector(':focus')
+    focusables[0].focus()
     modal.style.display = 'flex';
     modal.removeAttribute('aria-hidden');
     modal.setAttribute('aria-modal', 'true');
@@ -57,22 +59,43 @@ const handleDeleteProject = async (projectId) => {
 //Fonction pour fermer la modal
 const closeModal = (e) => {
     if (modal === null) return;
+    if(previousyFocusedElement !==null) previousyFocusedElement.focus()
     e.preventDefault();
-    modal.style.display = 'none';
+ 
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);
     modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
     modal.querySelector('.modal-wrapper').removeEventListener('click', stopPropagation);
-    modal = null;
+    const hideModal = function () {
+        modal.style.display = "none";
+        modal.removeEventListener('animationend', hideModal)
+        modal = null;
+    }
+    modal.addEventListener('animationend', hideModal)
 };
 //Fonction qui stoppe la propagation (ex= empecher de fermer a modal au clique sur le contenu de la modal)
 const stopPropagation = (e) => {
     e.stopPropagation();
 };
-// Focus des éléments (ici les photos)
+// Focus des éléments 
 const focusInModal = (e) => {
     e.preventDefault()
+    let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
+    index++;
+    if(e.shiftKey === true){
+        index--
+    }
+    else{
+        index++
+    }
+    if (index >= focusables.length){
+        index=0
+    }
+    if(index <0 ){
+        index=focusables.lenght - 1
+    }
+    focusables[index].focus()
 }
 //On selectionne tous les element avec la class js-modal et on écoute le click pour chaque element
 document.querySelectorAll('.js-modal').forEach(a => {
