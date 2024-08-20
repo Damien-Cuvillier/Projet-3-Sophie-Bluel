@@ -4,11 +4,12 @@ let allProjects = []; // Stocker tous les projets ici
 // Fonction pour créer un élément de figure pour chaque projet et description = true pour afficher ou non les titres des images pareil pour les icones
 const createProjectFigure = (project, description = true, deleteIcon = false) => {
     const figure = document.createElement('figure');
+    figure.dataset.id = project.id; //Ajoutez l'ID du projet au dataset pour le retrouver plus tard
     const img = document.createElement('img');
     img.src = project.imageUrl;
     img.alt = project.title;
-
     figure.appendChild(img);
+
     if (description) {
         const figcaption = document.createElement('figcaption');
         figcaption.textContent = project.title;
@@ -16,10 +17,10 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
     }
 
     if (deleteIcon) {
-        const deleteIcon = document.createElement('submit');
+        const deleteIcon = document.createElement('button');
         deleteIcon.className = 'fa fa-trash delete-icon';
         deleteIcon.addEventListener('click', () => {
-            handleDeleteProject(project.id);
+            handleDeleteProject(project.id, figure); // Passe l'élément à supprimer avec l'ID
         });
         figure.appendChild(deleteIcon);
     }
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const projects = await response.json();
             allProjects = projects; // Stocker les projets récupérés
             displayProjects(projects);
+            displayModalGallery(); // Mettre à jour la galerie dans la modal si nécessaire
         } catch (error) {
             console.error('Erreur lors de la récupération des projets:', error);
         }

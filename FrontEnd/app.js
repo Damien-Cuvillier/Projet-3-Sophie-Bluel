@@ -1,5 +1,5 @@
 let modal = null;
-const focusableSelector= 'submit, button'           
+const focusableSelector= 'input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])'     
 let focusables=[] //stock les elements focusables
 let previousyFocusedElement = null
 const btnAddPhoto = document.getElementById('btn-add-photo');
@@ -65,33 +65,34 @@ btnBack.addEventListener('click', () => {
     }
 });
 // Soumettre le formulaire d'ajout de photo
-formAddPhoto.addEventListener('submit', async (e)=>{
-    e.preventDefault()
-    //recuperer les données du formulaires
-    const formData = new FormData(formAddPhoto)
-
+formAddPhoto.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(formAddPhoto);
     try {
         const response = await fetch('http://localhost:5678/api/works', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Content-Type': 'application/json'
             },
             body: formData
         });
         if (response.ok) {
-            alert('Photo ajoutée avec succès !')
-            //Retourne a la vue galerie 
-            viewAddPhoto.style.display='none'
-            viewGallery.style.display='block'
-            fetchProjects() //pour recharger la galerie dans la modal
+            alert('Photo ajoutée avec succès !');
+            viewAddPhoto.style.display = 'none';
+            viewGallery.style.display = 'block';
+            fetchProjects();
         } else {
-            alert('Erreur lors de l\'ajout de la photo')
+            const errorText = await response.text();
+            console.error('Erreur du serveur:', errorText);
+            alert('Erreur lors de l\'ajout de la photo');
         }
-    } catch(error) {
-        console.error('Erreur lors de la soumission du formulaire:', error)
+    } catch (error) {
+        console.error('Erreur lors de la soumission du formulaire:', error.message);
+        console.error('Détails complets:', error);
+        alert('Erreur lors de la soumission du formulaire. Veuillez vérifier la console pour plus de détails.');
     }
-    
-})
+});
 //remplissage des catégories dans la vue Ajout photo
 const fetchCategoriesForm = async () =>{
     try{
@@ -116,7 +117,7 @@ btnAddPhoto.addEventListener('click', ()=>{
     fetchCategoriesForm();
 })
 //fonction pour supprimer un élément de la modale
-const handleDeleteProject = async (projectId) => {
+const handleDeleteProject = async (projectId, projectElement) => {
     const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
     if (!confirmation) return;
 
@@ -134,8 +135,9 @@ const handleDeleteProject = async (projectId) => {
         }
 
         alert('Projet supprimé avec succès');
-        fetchProjects();
-        displayModalGallery();
+        projectElement.remove(); // supprime dans le DOM
+        // fetchProjects();
+        // displayModalGallery();
     } catch (error) {
         console.error('Erreur:', error);
         alert('Une erreur s\'est produite lors de la suppression du projet');
@@ -199,4 +201,3 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
-//Vidéo graphikart stoppé a 23min33

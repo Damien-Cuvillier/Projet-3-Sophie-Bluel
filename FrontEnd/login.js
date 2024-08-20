@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 // Sauvegarde du token d'authentification
                 localStorage.setItem('authToken', data.token);
-
                 // Redirection vers la page du mode édition
                 window.location.href = 'index.html';
+                
             } else {
                 // Affichage du message d'erreur
                 errorMessage.textContent = 'Identifiants incorrects. Veuillez réessayer.';
