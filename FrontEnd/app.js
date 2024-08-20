@@ -67,13 +67,13 @@ btnBack.addEventListener('click', () => {
 // Soumettre le formulaire d'ajout de photo
 formAddPhoto.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const formData = new FormData(formAddPhoto);
+    const formData = new FormData(formAddPhoto); //récupère les données du formulaire
     try {
         const response = await fetch('http://localhost:5678/api/works', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                'Content-Type': 'application/json'
+                
             },
             body: formData
         });
@@ -81,7 +81,7 @@ formAddPhoto.addEventListener('submit', async (e) => {
             alert('Photo ajoutée avec succès !');
             viewAddPhoto.style.display = 'none';
             viewGallery.style.display = 'block';
-            fetchProjects();
+            fetchProjects(); //recharge la galerie
         } else {
             const errorText = await response.text();
             console.error('Erreur du serveur:', errorText);

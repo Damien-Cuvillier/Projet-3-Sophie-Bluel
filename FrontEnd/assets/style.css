@@ -317,7 +317,7 @@ footer{
 	max-height: 670px;
 	height: 100%;
     margin: auto;
-    padding: 50px 125px 125px;
+    padding: 50px 125px 100px;
     background-color: white;
     border-radius: 8px;
     position: relative;
@@ -418,8 +418,9 @@ footer{
 	display:flex;
 	flex-direction: column;
 	justify-content: center;
-	
-	
+	border-bottom: 1px solid #B3B3B3;
+	padding-bottom: 50px;
+	gap:10px;
 }
 #btn-back {
     background-color: transparent;
@@ -471,53 +472,88 @@ footer{
 	text-align: center;
 
 }
-#photo-upload {
-	display:none;
+input[type="file"]{ /* Superposition des elements du bouton pour rendre le tout cliquable */
+	z-index: 1;
+	opacity:0;
+	width:173px;
+	height:36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	cursor: pointer;
+	border-radius: 20px;
+}
+.photo button{
+	z-index: 0;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items:center ;
+}
+label[for="photo"] {
+	z-index: 0;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-self: center;
 }
 .btn-container {
     display: inline-block;
     color: #306685;
     background-color: #c9d9de;
     border-radius: 20px;
-    padding: 10px 20px;
     margin-bottom: 10px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     border: none;
 	width:173px;
+	height: 36px;
 }
-.btn-container p{
+.photo p{
 	font-family: Work Sans;
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 16.42px;
 	text-align: center;
+}
 
-}
-label[for="photo-upload"] {
-    font-size: 12px;
-    color: #888;
-}
 label[for="title"],
 label[for="category"] {
     font-size: 14px;
     margin-bottom: 5px;
     color: #333;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 16.42px;
+	text-align: left;
 }
-input[type="text"],
-select {
+
+input[type="text"] {
+	box-shadow: 0px 4px 14px 0px #00000017;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 4px;
     font-size: 14px;
     color: #333;
+	height: 40px;
+}
+#category{
+	box-shadow: 0px 4px 14px 0px #00000017;
+	height: 51px;
+	border: none;
 }
 .btn-submit {
     width: 50%;
     padding: 12px;
     background-color: #ccc;
+	display: flex;
+	justify-content: center;
     color: white;
     border: none;
     border-radius: 20px;
@@ -525,5 +561,5 @@ select {
     font-weight: bold;
     cursor: pointer;
     text-align: center;
-	margin: auto;
+	margin:50px auto;
 }
