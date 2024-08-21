@@ -18,6 +18,7 @@
 <body>
 	<!--Bandeau noir entête du mode édition-->
 	<div id="mode-edition"><i class="fa-regular fa-pen-to-square"></i><p>mode édition</p></div>
+	<div class="main-container">
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -67,16 +68,17 @@
 				<form id="form-add-photo">
 					<div class="image-upload-container">
 						<div class="image-preview">
+							<i class="fa-regular fa-image"></i>
 							<img id = "image-preview" src="" alt="Prévisualisation de l'image" >
-					
+						</div>
 						<div class="photo">
 							<button class="btn-container">
 								<input type="file" id="photo-upload" name="photo"  accept="image/png, image/jpeg">
 								<label for="photo">+ Ajouter photo</label>
 							</button>
-							<p>jpg, png : 4mo max</p>
+							<p id = "txt-info">jpg, png : 4mo max</p>
 						</div>
-						</div>
+					
 					</div>
 					<label for="title">Titre</label>
 					<input type="text" id="title" name="title">
@@ -117,5 +119,6 @@
 <script src="./script.js"></script>
 <script src="./login.js"></script>
 <script src="./app.js"></script>
+</div>
 </body>
 </html>

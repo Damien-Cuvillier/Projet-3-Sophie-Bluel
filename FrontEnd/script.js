@@ -4,7 +4,7 @@ let allProjects = []; // Stocker tous les projets ici
 // Fonction pour créer un élément de figure pour chaque projet et description = true pour afficher ou non les titres des images pareil pour les icones
 const createProjectFigure = (project, description = true, deleteIcon = false) => {
     const figure = document.createElement('figure');
-    figure.dataset.id = project.id; //Ajoutez l'ID du projet au dataset pour le retrouver plus tard
+    figure.dataset.id = project.id; // Ajoutez l'ID du projet au dataset pour le retrouver plus tard
     const img = document.createElement('img');
     img.src = project.imageUrl;
     img.alt = project.title;
@@ -17,17 +17,18 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
     }
 
     if (deleteIcon) {
-        const deleteIcon = document.createElement('button');
-        deleteIcon.className = 'fa fa-trash delete-icon';
-        deleteIcon.addEventListener('click', () => {
-            handleDeleteProject(project.id, figure); // Passe l'élément à supprimer avec l'ID
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'fa fa-trash delete-icon';
+        deleteButton.type = 'button'; // Assurez-vous que ce n'est pas un bouton de type submit
+        deleteButton.addEventListener('click', (event) => {
+            handleDeleteProject(project.id, figure, event); // Passe l'élément à supprimer avec l'ID
         });
-        figure.appendChild(deleteIcon);
+        figure.appendChild(deleteButton);
     }
 
-    
     return figure;
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.querySelector('.gallery');

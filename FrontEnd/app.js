@@ -9,8 +9,9 @@ const viewAddPhoto = document.getElementById('view-add-photo');
 const formAddPhoto = document.getElementById('form-add-photo');
 const photoUploadInput = document.getElementById('photo-upload');
 const imagePreview = document.getElementById('image-preview');
-
-
+const btnSubmit = document.querySelector('.btn-container')
+const txt = document.getElementById('txt-info')
+const iconeImg = document.querySelector('.fa-image')
 //fonction pour ouvrir la modal
 const openModal = (e) => {
     e.preventDefault();
@@ -33,11 +34,11 @@ const displayModalGallery = () => {
     modalGallery.innerHTML = ''; // On vide la galerie avant de la remplir
 
     allProjects.forEach(project => {
-        const projectFigure = createProjectFigure(project, false, true); // false pour cacher les titres des images, true pour afficher l'icone corbeille en modale
+        const projectFigure = createProjectFigure(project, false, true); // false pour cacher les titres des images, true pour afficher l'icône corbeille en modale
         modalGallery.appendChild(projectFigure);
     });
- 
-}  
+};
+
 //afficher la vue "Ajout photo"
 btnAddPhoto.addEventListener('click', () => {
     viewGallery.style.display = 'none';
@@ -57,7 +58,11 @@ btnBack.addEventListener('click', () => {
         const reader = new FileReader();
         reader.onload = function(e) {
             imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
+            imagePreview.style.display = 'flex';
+
+            btnSubmit.classList.add('hidden');
+            txt.classList.add('hidden')
+            iconeImg.classList.add('hidden')
         };
         reader.readAsDataURL(file);
     } else {
@@ -117,7 +122,10 @@ btnAddPhoto.addEventListener('click', ()=>{
     fetchCategoriesForm();
 })
 //fonction pour supprimer un élément de la modale
-const handleDeleteProject = async (projectId, projectElement) => {
+const handleDeleteProject = async (projectId, projectElement, event) => {
+    event.preventDefault(); // Empêche le comportement par défaut
+    event.stopPropagation(); // Empêche la propagation de l'événement
+
     const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
     if (!confirmation) return;
 
@@ -135,14 +143,21 @@ const handleDeleteProject = async (projectId, projectElement) => {
         }
 
         alert('Projet supprimé avec succès');
-        projectElement.remove(); // supprime dans le DOM
-        // fetchProjects();
-        // displayModalGallery();
+
+        // Supprime le projet du DOM
+        projectElement.remove(); 
+
+        // Actualiser la liste des projets dans la modal sans fermer la modal
+        allProjects = allProjects.filter(project => project.id !== projectId);
+        displayModalGallery(); // Mise à jour de la galerie modale
+
     } catch (error) {
         console.error('Erreur:', error);
         alert('Une erreur s\'est produite lors de la suppression du projet');
     }
 };
+
+
 
 //Fonction pour fermer la modal
 const closeModal = (e) => {
@@ -188,6 +203,7 @@ const focusInModal = (e) => {
 //On selectionne tous les element avec la class js-modal et on écoute le click pour chaque element
 document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal);
+    openModal()
 });
 
 //On écoute les pressions des touches de claviers 

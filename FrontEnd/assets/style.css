@@ -50,7 +50,7 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
+.main-container {
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
@@ -59,7 +59,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 section {
 	margin: 50px 0
@@ -290,7 +290,9 @@ footer{
 	background-color: black;
 	color: white;
 	height:59px;
-	max-width: 1440px;
+	margin:auto;
+	width: 100%;
+	
 }
 .fa-pen-to-square{
 	display: flex;
@@ -436,6 +438,16 @@ footer{
 }
 .image-upload-container {
     margin-bottom: 20px;
+	width: 100%;
+    height: 169px;
+    border-radius: 8px;
+	margin: auto;
+    justify-content: center;
+    align-items: center;
+	display: flex;
+	flex-direction: column;
+	background-color: #E8F1F6;
+	margin-bottom: 10px;
 }
 .image-preview{
 	width: 100%;
@@ -447,7 +459,6 @@ footer{
 	display: flex;
 	flex-direction: column;
 	background-color: #E8F1F6;
-	;
 	margin-bottom: 10px;
 }
 
