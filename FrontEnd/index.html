@@ -73,23 +73,24 @@
 						</div>
 						<div class="photo">
 							<button class="btn-container">
-								<input type="file" id="photo-upload" name="photo"  accept="image/png, image/jpeg">
-								<label for="photo">+ Ajouter photo</label>
+								<input type="file" id="photo-upload" name="image"  accept="image/png, image/jpeg">
+								<label for="photo-upload">+ Ajouter photo</label>
 							</button>
 							<p id = "txt-info">jpg, png : 4mo max</p>
 						</div>
 					
 					</div>
-					<label for="title">Titre</label>
-					<input type="text" id="title" name="title">
+					<label for="photo-title">Titre</label>
+					<input type="text" id="photo-title" name="title">
 	
 					<label for="category">Catégorie</label>
 					<select id="category" name="category">
 						<option  disabled selected></option> <!--ne pas faire apparaitre de catégorie sans la sélectionner-->
 						<!-- Options de catégories à remplir dynamiquement -->
 					</select>
+					<button type="submit" class="btn-submit">Valider</button>
 				</form>
-				<button type="submit" class="btn-submit">Valider</button>
+				
 			</div>
         </div>
     </aside>

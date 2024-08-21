@@ -10,8 +10,12 @@ const formAddPhoto = document.getElementById('form-add-photo');
 const photoUploadInput = document.getElementById('photo-upload');
 const imagePreview = document.getElementById('image-preview');
 const btnSubmit = document.querySelector('.btn-container')
-const txt = document.getElementById('txt-info')
-const iconeImg = document.querySelector('.fa-image')
+const txt = document.getElementById('txt-info');
+const iconeImg = document.querySelector('.fa-image');
+const photoTitleInput = document.getElementById('photo-title');
+const categorySelect = document.getElementById('category');
+const submitBtn = document.querySelector('.btn-submit');
+
 //fonction pour ouvrir la modal
 const openModal = (e) => {
     e.preventDefault();
@@ -69,35 +73,38 @@ btnBack.addEventListener('click', () => {
         imagePreview.style.display = 'none';
     }
 });
+
 // Soumettre le formulaire d'ajout de photo
-formAddPhoto.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(formAddPhoto); //récupère les données du formulaire
-    try {
-        const response = await fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+// formAddPhoto.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+    
+//     const formData = new FormData(formAddPhoto); //récupère les données du formulaire
+//     try {
+//         const response = await fetch('http://localhost:5678/api/works', {
+//             method: 'POST',
+//             headers: {
+//                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 
-            },
-            body: formData
-        });
-        if (response.ok) {
-            alert('Photo ajoutée avec succès !');
-            viewAddPhoto.style.display = 'none';
-            viewGallery.style.display = 'block';
-            fetchProjects(); //recharge la galerie
-        } else {
-            const errorText = await response.text();
-            console.error('Erreur du serveur:', errorText);
-            alert('Erreur lors de l\'ajout de la photo');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la soumission du formulaire:', error.message);
-        console.error('Détails complets:', error);
-        alert('Erreur lors de la soumission du formulaire. Veuillez vérifier la console pour plus de détails.');
-    }
-});
+//             },
+//             body: formData
+//         });
+//         if (response.ok) {
+//             alert('Photo ajoutée avec succès !');
+//             viewAddPhoto.style.display = 'none';
+//             viewGallery.style.display = 'block';
+//             fetchProjects(); //recharge la galerie
+//         } else {
+//             const errorText = await response.text();
+//             console.error('Erreur du serveur:', errorText);
+//             alert('Erreur lors de l\'ajout de la photo');
+//         }
+//     } catch (error) {
+//         console.error('Erreur lors de la soumission du formulaire:', error.message);
+//         console.error('Détails complets:', error);
+//         alert('Erreur lors de la soumission du formulaire. Veuillez vérifier la console pour plus de détails.');
+//     }
+// });
+
 //remplissage des catégories dans la vue Ajout photo
 const fetchCategoriesForm = async () =>{
     try{
@@ -150,14 +157,89 @@ const handleDeleteProject = async (projectId, projectElement, event) => {
         // Actualiser la liste des projets dans la modal sans fermer la modal
         allProjects = allProjects.filter(project => project.id !== projectId);
         displayModalGallery(); // Mise à jour de la galerie modale
-
+        displayProjects(allProjects);
     } catch (error) {
         console.error('Erreur:', error);
         alert('Une erreur s\'est produite lors de la suppression du projet');
     }
 };
+//Fonction pour vérifier si toutes les conditions sont remplies pour le btn submit
+const validateForm = () =>{
+    const imageIsSelected = photoUploadInput.files.length > 0
+    const titleIsSelected = photoTitleInput.value.trim() !== '';
+    const categoryIsSelected = categorySelect.value !== '';
+    
+    // Activer le bouton si toutes les conditions sont remplies
+    if(imageIsSelected && titleIsSelected && categoryIsSelected) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('disabled');
+        submitBtn.classList.add('valid');
+    } else {
+        btnSubmit.disabled = true;
+        submitBtn.classList.remove('valid');
+        submitBtn.classList.add('disabled');
+    }
+   
+    
+}
+const resetFormFields = () => {
+    // Effacer la prévisualisation de l'image
+    if (imagePreview) {
+        imagePreview.src = '';
+    }
+    
+    // Réinitialiser les autres champs du formulaire
+    photoUploadInput.value = '';
+    photoTitleInput.value = '';
+    categorySelect.selectedIndex = 0;
+};
+
+// Vérifier la validité du formulaire à chaque modification
+photoUploadInput.addEventListener('change', validateForm);
+photoTitleInput.addEventListener('input', validateForm);
+categorySelect.addEventListener('change', validateForm);
+validateForm();
+
+//fonction pour envoyer le formulaire
+const handleSubmitForm = async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+    console.log("Formulaire soumis");
+
+    const formData = new FormData(formAddPhoto);
+    console.log('Données du formulaire:', Array.from(formData.entries())); // Affiche les données dans la console
+
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: formData
+        });
+        console.log('Réponse du serveur:', await response.text());
+        if (!response.ok) {
+            throw new Error('Erreur lors de l\'ajout du projet');
+        }
+
+        alert('Projet ajouté avec succès');
+        
+        // Réinitialiser le formulaire
+        resetFormFields(); 
+        
+        // Mettre à jour la galerie
+        await fetchProjects(); //fetchProjects est bien défini et accessible
+        displayModalGallery(); // Met à jour la galerie dans la modale
+
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur s\'est produite lors de l\'ajout du projet');
+    }
+};
 
 
+// Attacher le gestionnaire à l'événement submit du formulaire
+console.log("Attachement du gestionnaire d'événement");
+formAddPhoto.addEventListener('submit', handleSubmitForm);
 
 //Fonction pour fermer la modal
 const closeModal = (e) => {
@@ -181,39 +263,42 @@ const closeModal = (e) => {
 const stopPropagation = (e) => {
     e.stopPropagation();
 };
-// Focus des éléments 
-const focusInModal = (e) => {
-    e.preventDefault()
-    let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
-    index++;
-    if(e.shiftKey === true){
-        index--
-    }
-    else{
-        index++
-    }
-    if (index >= focusables.length){
-        index=0
-    }
-    if(index <0 ){
-        index=focusables.lenght - 1
-    }
-    focusables[index].focus()
-}
+
 //On selectionne tous les element avec la class js-modal et on écoute le click pour chaque element
 document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal);
     openModal()
 });
 
+
+
+// Focus des éléments 
+// const focusInModal = (e) => {
+//     e.preventDefault()
+//     let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
+//     index++;
+//     if(e.shiftKey === true){
+//         index--
+//     }
+//     else{
+//         index++
+//     }
+//     if (index >= focusables.length){
+//         index=0
+//     }
+//     if(index <0 ){
+//         index=focusables.lenght - 1
+//     }
+//     focusables[index].focus()
+// }
 //On écoute les pressions des touches de claviers 
-window.addEventListener('keydown', (e) => {
-    if (e.key === "Escape" || e.key === "Esc"){
-        closeModal(e)
-    }
-    //ecoute le comportement de TAB
-    if (e.key === "Tab" && modal !== null) {
-        focusInModal(e)
-    }
-})
+// window.addEventListener('keydown', (e) => {
+//     if (e.key === "Escape" || e.key === "Esc"){
+//         closeModal(e)
+//     }
+//     //ecoute le comportement de TAB
+//     if (e.key === "Tab" && modal !== null) {
+//         focusInModal(e)
+//     }
+// })
 

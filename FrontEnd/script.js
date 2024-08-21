@@ -30,7 +30,7 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
 };
 
 
-document.addEventListener('DOMContentLoaded', () => {
+
     const gallery = document.querySelector('.gallery');
     const categoryMenu = document.querySelector('.category-menu');
     
@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
     // Initialiser la galerie et le menu des catégories
-    fetchProjects();
-    fetchCategories();
-});
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchProjects();
+        fetchCategories();
+    });
+   
