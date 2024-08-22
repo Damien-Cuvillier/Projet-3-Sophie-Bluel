@@ -8,6 +8,7 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
     const img = document.createElement('img');
     img.src = project.imageUrl;
     img.alt = project.title;
+
     figure.appendChild(img);
 
     if (description) {

@@ -88,6 +88,7 @@
 						<option  disabled selected></option> <!--ne pas faire apparaitre de catégorie sans la sélectionner-->
 						<!-- Options de catégories à remplir dynamiquement -->
 					</select>
+					<div class="grey-bar"></div>
 					<button type="submit" class="btn-submit">Valider</button>
 				</form>
 				
@@ -100,9 +101,9 @@
 		<p>Vous avez un projet ? Discutons-en !</p>
 		<form action="#" method="post">
 			<label for="name">Nom</label>
-			<input type="text" name="name" id="name">
+			<input type="text" name="name" id="name" required>
 			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" id="email" required>
 			<label for="message">Message</label>
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
 			<input type="submit" value="Envoyer">

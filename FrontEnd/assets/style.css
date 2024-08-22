@@ -147,7 +147,8 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
+	height: 96.5%;
+	object-fit: cover
 }
 #contact {
 	width: 50%;
@@ -349,7 +350,9 @@ footer{
 }
 .modal .gallery-modal img {
     width: 100%;
-    height: auto;
+    height: 100%;
+	object-fit: cover;
+	max-height: 157.45px;
     display: block;
 }
 .modal #btn-add-photo {
@@ -424,9 +427,13 @@ footer{
 	display:flex;
 	flex-direction: column;
 	justify-content: center;
-	border-bottom: 1px solid #B3B3B3;
+	
 	padding-bottom: 50px;
 	gap:10px;
+}
+.grey-bar {
+	border-bottom: 1px solid #B3B3B3;
+	padding-bottom: 50px;
 }
 #btn-back {
     background-color: transparent;

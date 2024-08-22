@@ -10,7 +10,7 @@ const formAddPhoto = document.getElementById('form-add-photo');
 const photoUploadInput = document.getElementById('photo-upload');
 const imagePreview = document.getElementById('image-preview');
 const btnSubmit = document.querySelector('.btn-container')
-const txt = document.getElementById('txt-info');
+const infotxt = document.getElementById('txt-info');
 const iconeImg = document.querySelector('.fa-image');
 const photoTitleInput = document.getElementById('photo-title');
 const categorySelect = document.getElementById('category');
@@ -64,54 +64,46 @@ btnBack.addEventListener('click', () => {
             imagePreview.src = e.target.result;
             imagePreview.style.display = 'flex';
 
-            btnSubmit.classList.add('hidden');
-            txt.classList.add('hidden')
-            iconeImg.classList.add('hidden')
+            if (iconeImg) {
+                iconeImg.classList.add('hidden');; // Masquer l'icône
+            }
+            if (infotxt) {
+                infotxt.classList.add('hidden') // Masquer le texte
+            }
+            if (btnSubmit) {
+                btnSubmit.classList.add('hidden') ; // Masquer le bouton
+            }
         };
-        reader.readAsDataURL(file);
+
+        reader.readAsDataURL(file); // Lire le fichier comme une URL de données
     } else {
-        imagePreview.style.display = 'none';
+        // Si aucun fichier n'est sélectionné, réafficher l'icône et le texte
+        imagePreview.style.display = 'none'; // Masquer l'image prévisualisée
+        if (iconeImg) {
+            iconeImg.classList.remove('hidden'); // Afficher l'icône
+        }
+        if (infotxt) {
+            infotxt.classList.remove('hidden'); // Afficher le texte
+        }
+        if (btnSubmit) {
+            btnSubmit.classList.remove('hidden'); // Afficher le bouton
+        }
     }
 });
-
-// Soumettre le formulaire d'ajout de photo
-// formAddPhoto.addEventListener('submit', async (e) => {
-//     e.preventDefault();
-    
-//     const formData = new FormData(formAddPhoto); //récupère les données du formulaire
-//     try {
-//         const response = await fetch('http://localhost:5678/api/works', {
-//             method: 'POST',
-//             headers: {
-//                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                
-//             },
-//             body: formData
-//         });
-//         if (response.ok) {
-//             alert('Photo ajoutée avec succès !');
-//             viewAddPhoto.style.display = 'none';
-//             viewGallery.style.display = 'block';
-//             fetchProjects(); //recharge la galerie
-//         } else {
-//             const errorText = await response.text();
-//             console.error('Erreur du serveur:', errorText);
-//             alert('Erreur lors de l\'ajout de la photo');
-//         }
-//     } catch (error) {
-//         console.error('Erreur lors de la soumission du formulaire:', error.message);
-//         console.error('Détails complets:', error);
-//         alert('Erreur lors de la soumission du formulaire. Veuillez vérifier la console pour plus de détails.');
-//     }
-// });
 
 //remplissage des catégories dans la vue Ajout photo
 const fetchCategoriesForm = async () =>{
     try{
         const response = await fetch('http://localhost:5678/api/categories')
         const categories = await response.json()
+        // Vider les options existantes avant de les remplir à nouveau
+        categorySelect.innerHTML = ''; 
+        const defaultOption = document.createElement('option');
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        defaultOption.textContent = '';
+        categorySelect.appendChild(defaultOption);
 
-        const categorySelect = document.getElementById('category')
         categories.forEach(category =>{
             const option = document.createElement('option')
             option.value = category.id
@@ -182,23 +174,47 @@ const validateForm = () =>{
    
     
 }
-const resetFormFields = () => {
-    // Effacer la prévisualisation de l'image
-    if (imagePreview) {
-        imagePreview.src = '';
-    }
-    
-    // Réinitialiser les autres champs du formulaire
-    photoUploadInput.value = '';
-    photoTitleInput.value = '';
-    categorySelect.selectedIndex = 0;
-};
 
 // Vérifier la validité du formulaire à chaque modification
 photoUploadInput.addEventListener('change', validateForm);
 photoTitleInput.addEventListener('input', validateForm);
 categorySelect.addEventListener('change', validateForm);
 validateForm();
+
+//fonction pour reset le formulaire après le submit
+const resetFormFields = () => {
+    // Réinitialiser la prévisualisation de l'image
+    if (imagePreview) {
+        imagePreview.src = ''; // Effacer la source de l'image
+        imagePreview.style.display = 'none'; // Masquer l'image de prévisualisation
+    }
+
+    // Réinitialiser l'input file
+    if (photoUploadInput) {
+        photoUploadInput.value = ''; // Effacer la sélection de fichier
+    }
+
+    // Réinitialiser le titre et la catégorie
+    if (photoTitleInput) {
+        photoTitleInput.value = ''; // Effacer le titre
+    }
+    if (categorySelect) {
+        categorySelect.selectedIndex = 0; // Réinitialiser la sélection
+    }
+
+    // Réafficher le bouton "+ Ajouter photo" et le texte d'information
+
+    if (iconeImg) {
+        iconeImg.classList.remove('hidden'); // Réafficher l'icône
+    }
+    if (infotxt) {
+        infotxt.classList.remove('hidden'); // Réafficher le texte
+    }
+    if (btnSubmit) {
+        btnSubmit.classList.remove('hidden'); // Réafficher le bouton "+ Ajouter photo"
+    }
+};
+
 
 //fonction pour envoyer le formulaire
 const handleSubmitForm = async (e) => {
@@ -220,7 +236,7 @@ const handleSubmitForm = async (e) => {
         if (!response.ok) {
             throw new Error('Erreur lors de l\'ajout du projet');
         }
-
+        
         alert('Projet ajouté avec succès');
         
         // Réinitialiser le formulaire
@@ -269,36 +285,3 @@ document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal);
     openModal()
 });
-
-
-
-// Focus des éléments 
-// const focusInModal = (e) => {
-//     e.preventDefault()
-//     let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
-//     index++;
-//     if(e.shiftKey === true){
-//         index--
-//     }
-//     else{
-//         index++
-//     }
-//     if (index >= focusables.length){
-//         index=0
-//     }
-//     if(index <0 ){
-//         index=focusables.lenght - 1
-//     }
-//     focusables[index].focus()
-// }
-//On écoute les pressions des touches de claviers 
-// window.addEventListener('keydown', (e) => {
-//     if (e.key === "Escape" || e.key === "Esc"){
-//         closeModal(e)
-//     }
-//     //ecoute le comportement de TAB
-//     if (e.key === "Tab" && modal !== null) {
-//         focusInModal(e)
-//     }
-// })
-
