@@ -2,6 +2,7 @@ let modal = null;
 const focusableSelector= 'input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])'     
 let focusables=[] //stock les elements focusables
 let previousyFocusedElement = null
+//Récupération des éléments du html
 const btnAddPhoto = document.getElementById('btn-add-photo');
 const btnBack = document.getElementById('btn-back');
 const viewGallery = document.getElementById('view-gallery');
@@ -32,6 +33,7 @@ const openModal = (e) => {
 
     displayModalGallery();
 };
+
 //fonction pour afficher la galerie de photo dans la modal
 const displayModalGallery = () => {
     const modalGallery = document.querySelector('.gallery-modal');
@@ -43,21 +45,67 @@ const displayModalGallery = () => {
     });
 };
 
+//fonction pour supprimer un élément de la modale
+const handleDeleteProject = async (projectId, projectElement, event) => {
+    event.preventDefault(); // Empêche le comportement par défaut
+    event.stopPropagation(); // Empêche la propagation de l'événement
+
+    const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
+    if (!confirmation) return;
+
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la suppression du projet');
+        }
+
+        alert('Projet supprimé avec succès');
+
+        // Supprime le projet du DOM
+        projectElement.remove(); 
+
+        // Actualiser la liste des projets dans la modal sans fermer la modal
+        allProjects = allProjects.filter(project => project.id !== projectId);
+        displayModalGallery(); // Mise à jour de la galerie modale
+        displayProjects(allProjects);
+        
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur s\'est produite lors de la suppression du projet');
+    }
+};
+
 //afficher la vue "Ajout photo"
 btnAddPhoto.addEventListener('click', () => {
     viewGallery.style.display = 'none';
     viewAddPhoto.style.display = 'block';
    
 });
+
 // Revenir à la vue "Galerie photo"
 btnBack.addEventListener('click', () => {
     viewAddPhoto.style.display = 'none';
     viewGallery.style.display = 'block';
 });
 
- // Prévisualisation de l'image  Input pour uploader l'image, qui déclenche une prévisualisation dans l'élément imagePreview.
+// gestion du click pour passage à la vue "Ajout photo"
+btnAddPhoto.addEventListener('click', ()=>{
+    viewGallery.style.display = 'none'
+    viewAddPhoto.style.display = 'block'
+    fetchCategoriesForm();
+})
+
+ // Prévisualisation de l'image pour uploader l'image, qui déclenche une prévisualisation dans l'élément imagePreview.
  photoUploadInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -74,8 +122,8 @@ btnBack.addEventListener('click', () => {
                 btnSubmit.classList.add('hidden') ; // Masquer le bouton
             }
         };
-
         reader.readAsDataURL(file); // Lire le fichier comme une URL de données
+
     } else {
         // Si aucun fichier n'est sélectionné, réafficher l'icône et le texte
         imagePreview.style.display = 'none'; // Masquer l'image prévisualisée
@@ -114,47 +162,7 @@ const fetchCategoriesForm = async () =>{
         console.error('Erreur lors de la récupération des catégories', error)
     }
 }
-// Appelle cette fonction lors du passage à la vue "Ajout photo"
-btnAddPhoto.addEventListener('click', ()=>{
-    viewGallery.style.display = 'none'
-    viewAddPhoto.style.display = 'block'
-    fetchCategoriesForm();
-})
-//fonction pour supprimer un élément de la modale
-const handleDeleteProject = async (projectId, projectElement, event) => {
-    event.preventDefault(); // Empêche le comportement par défaut
-    event.stopPropagation(); // Empêche la propagation de l'événement
 
-    const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
-    if (!confirmation) return;
-
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de la suppression du projet');
-        }
-
-        alert('Projet supprimé avec succès');
-
-        // Supprime le projet du DOM
-        projectElement.remove(); 
-
-        // Actualiser la liste des projets dans la modal sans fermer la modal
-        allProjects = allProjects.filter(project => project.id !== projectId);
-        displayModalGallery(); // Mise à jour de la galerie modale
-        displayProjects(allProjects);
-    } catch (error) {
-        console.error('Erreur:', error);
-        alert('Une erreur s\'est produite lors de la suppression du projet');
-    }
-};
 //Fonction pour vérifier si toutes les conditions sont remplies pour le btn submit
 const validateForm = () =>{
     const imageIsSelected = photoUploadInput.files.length > 0
@@ -171,8 +179,6 @@ const validateForm = () =>{
         submitBtn.classList.remove('valid');
         submitBtn.classList.add('disabled');
     }
-   
-    
 }
 
 // Vérifier la validité du formulaire à chaque modification
@@ -203,7 +209,6 @@ const resetFormFields = () => {
     }
 
     // Réafficher le bouton "+ Ajouter photo" et le texte d'information
-
     if (iconeImg) {
         iconeImg.classList.remove('hidden'); // Réafficher l'icône
     }
@@ -214,7 +219,6 @@ const resetFormFields = () => {
         btnSubmit.classList.remove('hidden'); // Réafficher le bouton "+ Ajouter photo"
     }
 };
-
 
 //fonction pour envoyer le formulaire
 const handleSubmitForm = async (e) => {
@@ -252,7 +256,6 @@ const handleSubmitForm = async (e) => {
     }
 };
 
-
 // Attacher le gestionnaire à l'événement submit du formulaire
 console.log("Attachement du gestionnaire d'événement");
 formAddPhoto.addEventListener('submit', handleSubmitForm);
@@ -262,7 +265,9 @@ const closeModal = (e) => {
     if (modal === null) return;
     if(previousyFocusedElement !==null) previousyFocusedElement.focus()
     e.preventDefault();
- 
+ //reset le formulaire d'ajout de photo quand on ferme la modal
+    resetFormFields();
+
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);

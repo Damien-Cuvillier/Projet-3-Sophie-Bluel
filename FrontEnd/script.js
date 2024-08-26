@@ -10,13 +10,13 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
     img.alt = project.title;
 
     figure.appendChild(img);
-
+// Boucle afficher le titre des images dans la galerie et ne pas l'afficher dans la modal
     if (description) {
         const figcaption = document.createElement('figcaption');
         figcaption.textContent = project.title;
         figure.appendChild(figcaption);
     }
-
+// Boucle ne pas afficher l'icone corbeille des images dans la galerie et l'afficher dans la modal
     if (deleteIcon) {
         const deleteButton = document.createElement('button');
         deleteButton.className = 'fa fa-trash delete-icon';
@@ -29,8 +29,6 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
 
     return figure;
 };
-
-
 
     const gallery = document.querySelector('.gallery');
     const categoryMenu = document.querySelector('.category-menu');

@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si l'utilisateur n'est pas connecté, s'assurer que le bouton renvoie à la page de login
         loginBtn.href = 'login.html';
 }
+//gestion du submit pour stocker le token et vérification des bons champs de connexion
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
