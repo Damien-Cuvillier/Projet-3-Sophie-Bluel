@@ -36,7 +36,7 @@ const createProjectFigure = (project, description = true, deleteIcon = false) =>
 
     // Fonction pour afficher les projets dans la galerie
     const displayProjects = (projects) => {
-        gallery.innerHTML = '';
+        gallery.innerHTML = '';// Nettoyer la galerie avant de la remplir
         projects.forEach(project => {
             const projectFigure = createProjectFigure(project);
             gallery.appendChild(projectFigure);

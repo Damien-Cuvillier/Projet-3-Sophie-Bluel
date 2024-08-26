@@ -121,6 +121,7 @@ li:hover {
 	display: block;
 	margin: auto;
 	width: 80%;
+	height: 80%;
 }
 
 #introduction article {
@@ -601,3 +602,33 @@ input[type="text"], select {
 	cursor: not-allowed;
 	opacity: 0.7;
 }
+
+@media screen and (max-width: 1200px){
+	.main-container {
+		padding: 0 50px;
+	}
+	
+	
+}
+/* Sur mobile */
+@media screen and (max-width: 790px) {
+	.main-container{
+		padding: 0 50px;
+	}
+	.modal-wrapper {
+        width: 95%; /* La modale prend presque toute la largeur de l'écran */
+        height: 80%; /* La modale prend 80% de la hauteur de l'écran */
+       padding:0 20px
+    }
+	.photo{
+		top:230px
+	}
+	.fa-image{
+		top:145px
+	}
+	.modal-view{
+		overflow-y: auto; /* Ajoute un scroll si le contenu dépasse */
+    	max-height: calc(100% - 40px); /* Assure que le contenu ne dépasse pas la modale */
+	}
+}
+
