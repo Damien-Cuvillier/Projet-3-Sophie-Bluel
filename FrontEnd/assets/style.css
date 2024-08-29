@@ -595,7 +595,7 @@ input[type="text"], select {
 }
 .btn-submit.valid {
 	background-color: #1D6154;
-	
+	cursor: pointer;
 }
 .btn-submit.disabled {
 	background-color: gray;

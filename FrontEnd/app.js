@@ -21,9 +21,9 @@ const submitBtn = document.querySelector('.btn-submit');
 const openModal = (e) => {
     e.preventDefault();
     modal = document.querySelector(e.currentTarget.getAttribute('href'));
-    focusables= Array.from(modal.querySelectorAll(focusableSelector))
-    previousyFocusedElement = document.querySelector(':focus')
-    focusables[0].focus()
+    focusables = Array.from(modal.querySelectorAll(focusableSelector));
+    previousyFocusedElement = document.querySelector(':focus');
+    focusables[0].focus();
     modal.style.display = 'flex';
     modal.removeAttribute('aria-hidden');
     modal.setAttribute('aria-modal', 'true');
@@ -31,8 +31,15 @@ const openModal = (e) => {
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
     modal.querySelector('.modal-wrapper').addEventListener('click', stopPropagation);
 
+    // Réinitialiser l'affichage pour montrer la galerie
+    viewGallery.style.display = 'block';  // Afficher la vue Galerie
+    viewAddPhoto.style.display = 'none';  // Masquer la vue Ajouter photo
+
+    // Réinitialiser le formulaire et le bouton de soumission
+    resetFormState();
     displayModalGallery();
 };
+
 
 //fonction pour afficher la galerie de photo dans la modal
 const displayModalGallery = () => {
@@ -73,8 +80,8 @@ const handleDeleteProject = async (projectId, projectElement, event) => {
 
         // Actualiser la liste des projets dans la modal sans fermer la modal
         allProjects = allProjects.filter(project => project.id !== projectId);
-        displayModalGallery(); // Mise à jour de la galerie modale
-        displayProjects(allProjects);
+        fetchProjects()
+        resetFormFields();
         
     } catch (error) {
         console.error('Erreur:', error);
@@ -122,7 +129,7 @@ btnAddPhoto.addEventListener('click', ()=>{
                 btnSubmit.classList.add('hidden') ; // Masquer le bouton
             }
         };
-        reader.readAsDataURL(file); // Lire le fichier comme une URL de données
+        reader.readAsDataURL(file); // contient les données du fichier lu
 
     } else {
         // Si aucun fichier n'est sélectionné, réafficher l'icône et le texte
@@ -168,17 +175,22 @@ const validateForm = () =>{
     const imageIsSelected = photoUploadInput.files.length > 0
     const titleIsSelected = photoTitleInput.value.trim() !== '';
     const categoryIsSelected = categorySelect.value !== '';
-    
+    // Vérifier si tous les champs sont remplis
+    const formIsValid = imageIsSelected && titleIsSelected && categoryIsSelected;
     // Activer le bouton si toutes les conditions sont remplies
     if(imageIsSelected && titleIsSelected && categoryIsSelected) {
         submitBtn.disabled = false;
         submitBtn.classList.remove('disabled');
         submitBtn.classList.add('valid');
+    
     } else {
         btnSubmit.disabled = true;
         submitBtn.classList.remove('valid');
         submitBtn.classList.add('disabled');
+    
     }
+    // Retourner true ou false en fonction de la validité du formulaire
+    return formIsValid;
 }
 
 // Vérifier la validité du formulaire à chaque modification
@@ -186,6 +198,17 @@ photoUploadInput.addEventListener('change', validateForm);
 photoTitleInput.addEventListener('input', validateForm);
 categorySelect.addEventListener('change', validateForm);
 validateForm();
+
+// Fonction pour réinitialiser l'état du formulaire et du bouton
+const resetFormState = () => {
+    // Réinitialiser les champs du formulaire
+    photoUploadInput.value = '';
+    photoTitleInput.value = '';
+    categorySelect.value = '';
+
+    // Réinitialiser l'état du bouton de soumission
+    validateForm();
+};
 
 //fonction pour reset le formulaire après le submit
 const resetFormFields = () => {
@@ -223,8 +246,15 @@ const resetFormFields = () => {
 //fonction pour envoyer le formulaire
 const handleSubmitForm = async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
-    console.log("Formulaire soumis");
 
+    // Vérifier si le formulaire est valide
+    if (!validateForm()) {
+        alert('Formulaire invalide,soumission annulée.');
+        console.log("Formulaire invalide, soumission annulée.");
+        return; // Stopper l'exécution si le formulaire n'est pas valide
+    }
+
+// Si le formulaire est valide, poursuivre avec le reste du code
     const formData = new FormData(formAddPhoto);
     console.log('Données du formulaire:', Array.from(formData.entries())); // Affiche les données dans la console
 
@@ -249,7 +279,8 @@ const handleSubmitForm = async (e) => {
         // Mettre à jour la galerie
         await fetchProjects(); //fetchProjects est bien défini et accessible
         displayModalGallery(); // Met à jour la galerie dans la modale
-
+        // Fermer la modal et revenir à la page d'accueil en mode édition
+        closeModal(e);
     } catch (error) {
         console.error('Erreur:', error);
         alert('Une erreur s\'est produite lors de l\'ajout du projet');
@@ -288,5 +319,4 @@ const stopPropagation = (e) => {
 //On selectionne tous les element avec la class js-modal et on écoute le click pour chaque element
 document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal);
-    openModal()
 });

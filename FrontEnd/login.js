@@ -1,67 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Gestion du formulaire de connexion
     const form = document.getElementById('login-form');
-    const errorMessage = document.getElementById('error-message');
+    if (form) {
+        const errorMessage = document.getElementById('error-message');
+        
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:5678/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('authToken', data.token);
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.textContent = 'Identifiants incorrects. Veuillez réessayer.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                errorMessage.textContent = 'Une erreur s\'est produite. Veuillez réessayer plus tard.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    }
+
+    // Gestion du mode édition et autres éléments spécifiques
     const loginBtn = document.getElementById('btn-login');
     const editMode = document.getElementById('mode-edition');
     const categoryMenu = document.querySelector('.category-menu');
     const btnModal = document.querySelector('.js-modal');
-    // Vérifie si le token d'authentification est stocké
     const token = localStorage.getItem('authToken');
 
-    if (token) {
- // Si l'utilisateur est connecté, changer le texte du bouton à "logout"
-        
-        loginBtn.innerText = 'logout';
-        loginBtn.href = '#';  // Empêche la redirection vers la page de login
-        editMode.style.display = 'flex';
-        categoryMenu.style.display ='none';
-        btnModal.style.display = 'flex';
+    if (loginBtn) {
+        if (token) {
+            loginBtn.innerText = 'logout';
+            loginBtn.href = '#';
+            if (editMode) editMode.style.display = 'flex';
+            if (categoryMenu) categoryMenu.style.display = 'none';
+            if (btnModal) btnModal.style.display = 'flex';
 
- // Ajouter un gestionnaire d'événement pour déconnecter l'utilisateur
-        loginBtn.addEventListener('click', (event) => {
-            event.preventDefault();  // Empêche l'action par défaut du lien
-            localStorage.removeItem('authToken');  // Supprime le token d'authentification
-            window.location.href='index.html';  // Renvoi a la page d'index après la déconnection
-        });
-    } else {
-    // Si l'utilisateur n'est pas connecté, s'assurer que le bouton renvoie à la page de login
-        loginBtn.href = 'login.html';
-}
-//gestion du submit pour stocker le token et vérification des bons champs de connexion
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-       
-        try {
-            const response = await fetch('http://localhost:5678/api/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                //convertit les données en Json
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Sauvegarde du token d'authentification
-                localStorage.setItem('authToken', data.token);
-                // Redirection vers la page du mode édition
+            loginBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('authToken');
                 window.location.href = 'index.html';
-                
-            } else {
-                // Affichage du message d'erreur
-                errorMessage.textContent = 'Identifiants incorrects. Veuillez réessayer.';
-                errorMessage.style.display = 'block';
-            }
-        } catch (error) {
-            console.error('Erreur:', error);
-            errorMessage.textContent = 'Une erreur s\'est produite. Veuillez réessayer plus tard.';
-            errorMessage.style.display = 'block';
+            });
+        } else {
+            loginBtn.href = 'login.html';
         }
-       
-    });
+    }
 });
