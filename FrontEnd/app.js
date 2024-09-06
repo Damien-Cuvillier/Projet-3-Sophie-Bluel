@@ -280,7 +280,9 @@ const handleSubmitForm = async (e) => {
         await fetchProjects(); //fetchProjects est bien défini et accessible
         displayModalGallery(); // Met à jour la galerie dans la modale
         // Fermer la modal et revenir à la page d'accueil en mode édition
-        closeModal(e);
+        setTimeout(() => {
+            closeModal(e);
+        }, 0); // Fermer la modal immédiatement après la soumission
     } catch (error) {
         console.error('Erreur:', error);
         alert('Une erreur s\'est produite lors de l\'ajout du projet');
